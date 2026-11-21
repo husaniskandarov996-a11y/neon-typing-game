@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>neon type</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="screen">
+    <header class="hud">
+      <div>SCORE <b id="score">000000</b></div>
+      <div>LVL <b id="level">01</b></div>
+      <div>WPM <b id="wpm">0</b></div>
+      <div>ACC <b id="accuracy">100%</b></div>
+      <div class="lives" id="lives">♥♥♥</div>
+    </header>
+
+    <main id="arena">
+      <div id="ground"></div>
+    </main>
+
+    <footer class="prompt">
+      <span class="caret">&gt;</span>
+      <input id="typing" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" disabled />
+    </footer>
+
+    <section id="start-screen" class="overlay">
+      <h1 class="title">neon<span>type</span></h1>
+      <p class="tagline">type the words before they hit the floor.</p>
+
+      <div class="menu">
+        <button class="lang-btn active" data-lang="en">english</button>
+        <button class="lang-btn" data-lang="uz">o'zbekcha</button>
+        <button class="lang-btn" data-lang="code">code</button>
+      </div>
+
+      <button id="start-btn" class="press">press ENTER to start</button>
+      <p class="small">best: <b id="best-start">0</b></p>
+      <p class="sign">v0.1 · made by khusan</p>
+    </section>
+
+    <section id="over-screen" class="overlay hidden">
+      <h2 class="title over">game over</h2>
+      <table class="results">
+        <tr><td>score</td><td id="final-score">0</td></tr>
+        <tr><td>words</td><td id="final-words">0</td></tr>
+        <tr><td>wpm</td><td id="final-wpm">0</td></tr>
+        <tr><td>accuracy</td><td id="final-accuracy">0%</td></tr>
+      </table>
+      <p id="new-best" class="new-best hidden">new best!</p>
+      <button id="restart-btn" class="press">press ENTER to play again</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
