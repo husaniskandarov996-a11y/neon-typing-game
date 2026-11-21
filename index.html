@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>neon type</title>
-  <link rel="stylesheet" href="style.css?v=0.4" />
+  <link rel="stylesheet" href="style.css?v=0.5" />
 </head>
 <body>
   <div class="screen">
@@ -37,6 +37,17 @@
       <h1 class="title">neon<span>type</span></h1>
       <p class="tagline">type the words before they hit the floor.</p>
 
+      <form id="name-form" class="name-form hidden" autocomplete="off">
+        <p>who's playing?</p>
+        <div class="name-fields">
+          <input id="first-name" maxlength="20" placeholder="first name" spellcheck="false" />
+          <input id="last-name" maxlength="20" placeholder="last name" spellcheck="false" />
+          <button type="submit" class="action main">ok</button>
+        </div>
+        <p class="small" id="name-error"></p>
+      </form>
+      <p class="small player hidden" id="player-line">playing as <b id="player-name"></b> · <button id="change-name" class="link">change</button></p>
+
       <div class="menu" id="lang-menu">
         <button class="opt active" data-lang="en">english</button>
         <button class="opt" data-lang="uz">o'zbekcha</button>
@@ -51,7 +62,7 @@
       <button id="start-btn" class="press">press ENTER to start</button>
       <p class="small">best (<span id="best-mode">normal</span>): <b id="best-start">0</b></p>
       <button id="board-btn" class="action lb-only">[ L ] leaderboard</button>
-      <p class="sign">v0.4 · made by khusan</p>
+      <p class="sign">v0.5 · made by khusan</p>
     </section>
 
     <section id="board-screen" class="overlay hidden">
@@ -83,19 +94,16 @@
         <tr><td>accuracy</td><td id="final-accuracy">0%</td></tr>
       </table>
       <p id="new-best" class="new-best hidden">new best!</p>
-      <form id="submit-form" class="submit lb-only">
-        <input id="name-input" maxlength="12" placeholder="your name" autocomplete="off" spellcheck="false" />
-        <button type="submit" id="submit-btn" class="action main">save to leaderboard</button>
-      </form>
       <p class="small" id="submit-status"></p>
       <div class="actions">
         <button id="restart-btn" class="action main">[ enter ] play again</button>
+        <button id="over-board-btn" class="action lb-only">[ L ] leaderboard</button>
         <button id="exit-btn" class="action">[ esc ] exit</button>
       </div>
     </section>
   </div>
 
-  <script src="config.js?v=0.4"></script>
-  <script src="script.js?v=0.4"></script>
+  <script src="config.js?v=0.5"></script>
+  <script type="module" src="script.js?v=0.5"></script>
 </body>
 </html>

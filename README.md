@@ -40,9 +40,19 @@ There are also on-screen buttons for **pause**, **sound** and **fullscreen**, so
 
 ## leaderboard
 
-Scores are stored in Firebase Firestore through its REST API, with no SDK. `firestore.rules` only allows adding new scores with sane values: a name of up to 12 characters, positive integers, and no edits or deletes. The Firebase web key in `config.js` is public by design. The rules are what protect the data.
+Scores can't be typed in by hand. Before a game, the server (`server/worker.js`, a Cloudflare Worker with a D1 database) hands out a random seed. During the game the browser records only *what you typed and when*. When the game ends, the server replays the whole game with the same engine (`engine.js`) and works out the score itself. It also rejects:
+
+- games that finished faster than real time
+- typing faster than a human (more than 25 keys a second)
+- the same game sent twice
+
+You enter your first and last name once, before your first game. After that, every finished game is saved automatically.
 
 ## changelog
+
+**v0.5**
+- [x] cheat-proof leaderboard: the server replays every game and computes the score
+- [x] name asked once before playing, scores saved automatically
 
 **v0.4**
 - [x] online leaderboard (top 10 for normal and hard)

@@ -1,0 +1,8 @@
+name = "neon-type-api"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "neon-type"
+database_id = "00000000-0000-0000-0000-000000000000"
