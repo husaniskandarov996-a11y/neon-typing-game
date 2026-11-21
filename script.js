@@ -106,6 +106,37 @@ refreshMenu();
 
 function show(screen) {
   ["start-screen", "pause-screen", "over-screen"].forEach((id) => $(id).classList.toggle("hidden", id !== screen));
+  document.body.classList.toggle("playing", state === "playing");
+}
+
+// ---------- to'liq ekran ----------
+const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+
+function toggleFullscreen() {
+  const root = document.documentElement;
+  if (isFull()) {
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  } else if (root.requestFullscreen || root.webkitRequestFullscreen) {
+    (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+  }
+  if (state === "playing") input.focus();
+}
+
+function updateFsBtn() {
+  $("fs-btn").textContent = isFull() ? "⛶ exit fullscreen" : "⛶ fullscreen";
+}
+
+["fullscreenchange", "webkitfullscreenchange"].forEach((ev) =>
+  document.addEventListener(ev, () => {
+    updateFsBtn();
+    // Esc bilan to'liq ekrandan chiqilganda brauzer Esc'ni o'yinga bermaydi, shuning uchun o'zimiz pauza qilamiz
+    if (!isFull()) pauseGame();
+  })
+);
+$("fs-btn").addEventListener("click", toggleFullscreen);
+// iPhone Safari to'liq ekranni qo'llamaydi, u yerda tugmani yashiramiz
+if (!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) {
+  $("fs-btn").style.display = "none";
 }
 
 // ---------- o'yin ----------
@@ -353,6 +384,7 @@ $("start-btn").addEventListener("click", startGame);
 $("restart-btn").addEventListener("click", startGame);
 $("exit-btn").addEventListener("click", exitToMenu);
 $("resume-btn").addEventListener("click", resumeGame);
+$("pause-btn").addEventListener("click", pauseGame);
 $("quit-btn").addEventListener("click", exitToMenu);
 
 document.addEventListener("keydown", (e) => {
@@ -365,6 +397,9 @@ document.addEventListener("keydown", (e) => {
     if (state === "menu" || state === "over") { e.preventDefault(); startGame(); }
   } else if (e.key.toLowerCase() === "q" && state === "paused") {
     exitToMenu();
+  } else if (e.key.toLowerCase() === "f" && state !== "playing") {
+    // o'yin paytida "f" so'z ichida yoziladi, shuning uchun faqat menyularda ishlaydi
+    toggleFullscreen();
   }
 });
 

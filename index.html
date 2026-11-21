@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>neon type</title>
-  <link rel="stylesheet" href="style.css?v=0.2" />
+  <link rel="stylesheet" href="style.css?v=0.3" />
 </head>
 <body>
   <div class="screen">
@@ -13,9 +13,15 @@
       <div>LVL <b id="level">01</b></div>
       <div>WPM <b id="wpm">0</b></div>
       <div>ACC <b id="accuracy">100%</b></div>
-      <div class="hud-keys">esc pause · <button id="sound-btn" class="sound-btn">sound on</button></div>
       <div class="lives" id="lives">♥♥♥</div>
+      <button id="pause-btn" class="hud-btn" title="pause (esc)">❚❚ pause</button>
     </header>
+
+    <!-- har doim ko'rinib turadigan burchakdagi tugmalar -->
+    <div class="corner">
+      <button id="sound-btn" class="hud-btn">sound on</button>
+      <button id="fs-btn" class="hud-btn" title="fullscreen (f)">⛶ fullscreen</button>
+    </div>
 
     <main id="arena">
       <div id="ground"></div>
@@ -44,14 +50,15 @@
 
       <button id="start-btn" class="press">press ENTER to start</button>
       <p class="small">best (<span id="best-mode">normal</span>): <b id="best-start">0</b></p>
-      <p class="sign">v0.2 · made by khusan</p>
+      <p class="sign">v0.3 · made by khusan</p>
     </section>
 
     <section id="pause-screen" class="overlay dim hidden">
       <h2 class="title paused">paused</h2>
+      <p class="small">esc — resume · q — main menu</p>
       <div class="actions">
-        <button id="resume-btn" class="action">[ esc ] resume</button>
-        <button id="quit-btn" class="action">[ q ] quit to menu</button>
+        <button id="resume-btn" class="action main">▶ resume</button>
+        <button id="quit-btn" class="action">⌂ back to main menu</button>
       </div>
     </section>
 
@@ -71,6 +78,6 @@
     </section>
   </div>
 
-  <script src="script.js?v=0.2"></script>
+  <script src="script.js?v=0.3"></script>
 </body>
 </html>

@@ -108,6 +108,7 @@ body.hit #arena { animation: hit 0.3s steps(2); }
 
 /* ---------- input ---------- */
 .prompt {
+  padding-right: 340px !important;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -175,7 +176,7 @@ button {
 
 .small { color: var(--dim); }
 .small b { color: var(--amber); font-weight: normal; }
-.sign { position: absolute; bottom: 14px; right: 18px; color: #4a4556; font-size: 20px; }
+.sign { position: absolute; bottom: 14px; left: 18px; color: #4a4556; font-size: 20px; }
 
 .overlay.dim { background: rgba(14, 13, 18, 0.85); }
 .title.paused { color: var(--amber); font-size: clamp(56px, 12vw, 110px); }
@@ -186,9 +187,25 @@ button {
 .action.main { color: var(--amber); }
 .action.main:hover { color: var(--bg); background: var(--amber); }
 
-.hud-keys { color: #4a4556; }
-.sound-btn { color: var(--dim); }
-.sound-btn:hover { color: var(--ink); }
+.hud-btn {
+  color: var(--dim);
+  padding: 0 8px;
+  border: 1px solid #2a2733;
+}
+.hud-btn:hover, .hud-btn:focus-visible { color: var(--bg); background: var(--ink); outline: none; }
+#pause-btn { visibility: hidden; }
+body.playing #pause-btn { visibility: visible; }
+
+/* sound + fullscreen: har doim o'ng pastda, menyular ustida ham */
+.corner {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 15;
+  display: flex;
+  gap: 8px;
+  font-size: 20px;
+}
 
 .mode-hint { margin-top: -10px; font-size: 20px; }
 
@@ -214,7 +231,8 @@ button {
 @media (max-width: 600px) {
   body { font-size: 20px; }
   .hud { gap: 14px; }
-  .hud-keys { display: none; }
   .action { font-size: 24px; }
+  .prompt { padding-right: 18px !important; }
+  .corner { bottom: 78px; font-size: 18px; }
   .word { font-size: 28px; }
 }

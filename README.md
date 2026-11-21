@@ -4,7 +4,6 @@ A small typing game I made while learning JavaScript.
 
 Words fall from the top of the screen. Type one before it hits the red line and it's gone. Every word that gets through costs you a heart, and three hearts is all you have. Every 10 words it gets faster.
 
-
 **Play it here:** https://husaniskandarov996-a11y.github.io/neon-typing-game/
 
 ## word sets
@@ -30,8 +29,9 @@ The font is [VT323](https://fonts.google.com/specimen/VT323) by Peter Hull (SIL 
 | `enter` | start / play again |
 | `esc` | pause and resume. On the game over screen it goes back to the menu |
 | `q` | quit to the menu while paused |
+| `f` | toggle fullscreen (in menus) |
 
-The game also pauses by itself if you switch tabs.
+There are also on-screen buttons for **pause**, **sound** and **fullscreen**, so it works without a keyboard shortcut too. The game pauses by itself if you switch tabs or leave fullscreen.
 
 ## modes
 
@@ -39,6 +39,10 @@ The game also pauses by itself if you switch tabs.
 - **hard**: 2 lives, 1.5x faster, long words mixed in, double points. It keeps its own best score.
 
 ## changelog
+
+**v0.3**
+- [x] fullscreen button (enter and exit)
+- [x] clickable pause button with resume / back to main menu
 
 **v0.2**
 - [x] sound effects, all synthesized with the Web Audio API (no audio files). They can be muted.
