@@ -5,4 +5,4 @@ compatibility_date = "2025-06-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "neon-type"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "f245dcb0-3a0d-47ef-bc9a-bfa0ea6f923c"
