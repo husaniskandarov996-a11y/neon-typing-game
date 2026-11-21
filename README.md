@@ -36,7 +36,10 @@ There are also on-screen buttons for **pause**, **sound** and **fullscreen**, so
 ## modes
 
 - **normal**: 3 lives, regular speed
-- **hard**: 2 lives, 1.5x faster, long words mixed in, double points. It keeps its own best score.
+- **hard**: 2 lives, 1.5x faster, only words with 6+ letters, double points
+- **extreme**: for pros. 1 life, almost 2x faster, only 9+ letter words, x4 points
+
+Every mode keeps its own best score and its own leaderboard. Words come from a shuffled "bag", so none repeat until the whole list has been used.
 
 ## leaderboard
 
@@ -49,6 +52,11 @@ Scores can't be typed in by hand. Before a game, the server (`server/worker.js`,
 You enter your first and last name once, before your first game. After that, every finished game is saved automatically.
 
 ## changelog
+
+**v0.6**
+- [x] extreme mode
+- [x] hard mode uses only long words
+- [x] much bigger word lists, with no repeats until the list runs out
 
 **v0.5**
 - [x] cheat-proof leaderboard: the server replays every game and computes the score

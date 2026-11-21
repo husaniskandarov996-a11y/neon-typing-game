@@ -170,6 +170,14 @@ button {
 .opt:hover { color: var(--ink); }
 .opt.active { color: var(--bg); background: var(--ink); }
 #mode-menu .opt[data-mode="hard"].active { background: var(--red); }
+#mode-menu .opt[data-mode="extreme"] { color: var(--pink); }
+#mode-menu .opt[data-mode="extreme"].active {
+  color: var(--bg);
+  background: var(--pink);
+  box-shadow: 0 0 12px var(--pink);
+  animation: pulse 1.2s steps(2) infinite;
+}
+@keyframes pulse { 50% { box-shadow: 0 0 2px var(--pink); } }
 
 .press { color: var(--amber); font-size: 30px; animation: blink 1.1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }

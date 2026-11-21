@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>neon type</title>
-  <link rel="stylesheet" href="style.css?v=0.5" />
+  <link rel="stylesheet" href="style.css?v=0.6" />
 </head>
 <body>
   <div class="screen">
@@ -56,13 +56,14 @@
       <div class="menu" id="mode-menu">
         <button class="opt active" data-mode="normal">normal</button>
         <button class="opt" data-mode="hard">hard</button>
+        <button class="opt" data-mode="extreme">extreme</button>
       </div>
       <p class="small mode-hint" id="mode-hint">3 lives · regular speed</p>
 
       <button id="start-btn" class="press">press ENTER to start</button>
       <p class="small">best (<span id="best-mode">normal</span>): <b id="best-start">0</b></p>
       <button id="board-btn" class="action lb-only">[ L ] leaderboard</button>
-      <p class="sign">v0.5 · made by khusan</p>
+      <p class="sign">v0.6 · made by khusan</p>
     </section>
 
     <section id="board-screen" class="overlay hidden">
@@ -70,6 +71,7 @@
       <div class="menu" id="board-tabs">
         <button class="opt active" data-board="normal">normal</button>
         <button class="opt" data-board="hard">hard</button>
+        <button class="opt" data-board="extreme">extreme</button>
       </div>
       <table class="board" id="board-table"></table>
       <p class="small" id="board-status"></p>
@@ -103,7 +105,7 @@
     </section>
   </div>
 
-  <script src="config.js?v=0.5.1"></script>
-  <script type="module" src="script.js?v=0.5"></script>
+  <script src="config.js?v=0.6"></script>
+  <script type="module" src="script.js?v=0.6"></script>
 </body>
 </html>

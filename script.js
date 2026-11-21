@@ -1,12 +1,13 @@
 // neon type — ekran, ovoz va tugmalar. O'yin mantiqining o'zi engine.js ichida.
-import { createGame, TPS, FLOOR, WORD_H, MODES } from "./engine.js?v=0.5";
+import { createGame, TPS, FLOOR, WORD_H, MODES } from "./engine.js?v=0.6";
 
 const API = (window.NEON_TYPE_API || "").replace(/\/$/, "");
 const online = !!API;
 
 const HINTS = {
   normal: "3 lives · regular speed",
-  hard: "2 lives · faster · long words · x2 points",
+  hard: "2 lives · faster · only long words · x2 points",
+  extreme: "1 life · very fast · 9+ letter words · x4 points. for pros only",
 };
 
 const $ = (id) => document.getElementById(id);
