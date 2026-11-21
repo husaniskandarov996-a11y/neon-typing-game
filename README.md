@@ -38,7 +38,14 @@ There are also on-screen buttons for **pause**, **sound** and **fullscreen**, so
 - **normal**: 3 lives, regular speed
 - **hard**: 2 lives, 1.5x faster, long words mixed in, double points. It keeps its own best score.
 
+## leaderboard
+
+Scores are stored in Firebase Firestore through its REST API, with no SDK. `firestore.rules` only allows adding new scores with sane values: a name of up to 12 characters, positive integers, and no edits or deletes. The Firebase web key in `config.js` is public by design. The rules are what protect the data.
+
 ## changelog
+
+**v0.4**
+- [x] online leaderboard (top 10 for normal and hard)
 
 **v0.3**
 - [x] fullscreen button (enter and exit)
@@ -53,5 +60,4 @@ There are also on-screen buttons for **pause**, **sound** and **fullscreen**, so
 
 ## todo
 
-- [ ] online leaderboard
 - [ ] custom word lists

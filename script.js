@@ -105,7 +105,7 @@ function refreshMenu() {
 refreshMenu();
 
 function show(screen) {
-  ["start-screen", "pause-screen", "over-screen"].forEach((id) => $(id).classList.toggle("hidden", id !== screen));
+  ["start-screen", "pause-screen", "over-screen", "board-screen"].forEach((id) => $(id).classList.toggle("hidden", id !== screen));
   document.body.classList.toggle("playing", state === "playing");
 }
 
@@ -376,8 +376,149 @@ function gameOver() {
   const isBest = score > getBest();
   if (isBest) setBest(score);
   $("new-best").classList.toggle("hidden", !isBest);
+
+  // natijani o'yin tugagan payti "muzlatib" qo'yamiz, keyin wpm vaqt o'tishi bilan o'zgarmasin
+  lastRun = { mode, score, words: cleared, wpm: wpm(), saved: false };
+  $("submit-status").textContent = "";
+  $("submit-btn").disabled = score <= 0;
+  $("name-input").value = store.get("neonTypeName", "");
+  $("submit-form").classList.toggle("hidden", score <= 0);
   show("over-screen");
 }
+
+// ---------- leaderboard (Firebase Firestore, SDK'siz, oddiy fetch bilan) ----------
+const FB = window.NEON_TYPE_FIREBASE || {};
+const lbOn = !!(FB.projectId && FB.apiKey);
+document.body.classList.toggle("lb-on", lbOn);
+
+let lastRun = null;
+let boardMode = "normal";
+let boardBack = "start-screen";
+let myIds = new Set();
+try { myIds = new Set(JSON.parse(store.get("neonTypeMyIds", "[]"))); } catch {}
+
+const docsUrl = () =>
+  `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(FB.projectId)}/databases/(default)/documents`;
+
+async function fetchTop(m) {
+  const res = await fetch(`${docsUrl()}:runQuery?key=${FB.apiKey}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      structuredQuery: {
+        from: [{ collectionId: "scores_" + m }],
+        orderBy: [{ field: { fieldPath: "score" }, direction: "DESCENDING" }],
+        limit: 10,
+      },
+    }),
+  });
+  if (!res.ok) throw new Error("load failed: " + res.status);
+  const rows = await res.json();
+  return rows
+    .filter((r) => r.document)
+    .map((r) => {
+      const f = r.document.fields;
+      return {
+        id: r.document.name.split("/").pop(),
+        name: f.name.stringValue,
+        score: Number(f.score.integerValue),
+        wpm: Number(f.wpm.integerValue),
+      };
+    });
+}
+
+async function postScore(run, name) {
+  const res = await fetch(`${docsUrl()}/scores_${run.mode}?key=${FB.apiKey}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fields: {
+        name: { stringValue: name },
+        score: { integerValue: String(run.score) },
+        words: { integerValue: String(run.words) },
+        wpm: { integerValue: String(Math.min(run.wpm, 250)) },
+      },
+    }),
+  });
+  if (!res.ok) throw new Error("save failed: " + res.status);
+  const doc = await res.json();
+  return doc.name.split("/").pop();
+}
+
+// ism: bo'sh joylarni tozalaymiz, ko'rinmas belgilarni olib tashlaymiz, 12 ta belgigacha
+const cleanName = (s) => s.replace(/[\u0000-\u001f\u007f]/g, "").replace(/\s+/g, " ").trim().slice(0, 12);
+
+$("submit-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!lbOn || !lastRun || lastRun.saved) return;
+  const name = cleanName($("name-input").value);
+  if (!name) {
+    $("submit-status").textContent = "type a name first";
+    $("name-input").focus();
+    return;
+  }
+  store.set("neonTypeName", name);
+  $("submit-btn").disabled = true;
+  $("submit-status").textContent = "saving...";
+  try {
+    const id = await postScore(lastRun, name);
+    lastRun.saved = true;
+    myIds.add(id);
+    store.set("neonTypeMyIds", JSON.stringify([...myIds].slice(-50)));
+    $("submit-status").textContent = "saved!";
+    openBoard(lastRun.mode, "over-screen");
+  } catch (err) {
+    console.error(err);
+    $("submit-status").textContent = "couldn't save, check your internet and try again";
+    $("submit-btn").disabled = false;
+  }
+});
+
+function openBoard(m, back) {
+  if (!lbOn) return;
+  boardBack = back;
+  state = "board";
+  show("board-screen");
+  loadBoard(m);
+}
+
+function closeBoard() {
+  state = boardBack === "over-screen" ? "over" : "menu";
+  if (state === "menu") refreshMenu();
+  show(boardBack);
+}
+
+async function loadBoard(m) {
+  boardMode = m;
+  document.querySelectorAll("#board-tabs .opt").forEach((b) => b.classList.toggle("active", b.dataset.board === m));
+  const table = $("board-table");
+  table.replaceChildren();
+  $("board-status").textContent = "loading...";
+  try {
+    const rows = await fetchTop(m);
+    if (boardMode !== m) return;   // foydalanuvchi bu orada boshqa tabni bosgan
+    $("board-status").textContent = rows.length ? "" : "no scores yet. be the first!";
+    rows.forEach((r, i) => {
+      const tr = document.createElement("tr");
+      if (myIds.has(r.id)) tr.className = "me";
+      // ism textContent orqali qo'yiladi, shuning uchun hech kim sahifaga kod "tiqa" olmaydi
+      [[String(i + 1), "rank"], [r.name, "name"], [String(r.score), "num"], [r.wpm + " wpm", "wpm"]].forEach(([text, cls]) => {
+        const td = document.createElement("td");
+        td.className = cls;
+        td.textContent = text;
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+  } catch (err) {
+    console.error(err);
+    if (boardMode === m) $("board-status").textContent = "couldn't load the leaderboard";
+  }
+}
+
+document.querySelectorAll("#board-tabs .opt").forEach((b) => b.addEventListener("click", () => loadBoard(b.dataset.board)));
+$("board-btn").addEventListener("click", () => openBoard(mode, "start-screen"));
+$("board-back").addEventListener("click", closeBoard);
 
 // ---------- tugmalar va klaviatura ----------
 $("start-btn").addEventListener("click", startGame);
@@ -388,11 +529,18 @@ $("pause-btn").addEventListener("click", pauseGame);
 $("quit-btn").addEventListener("click", exitToMenu);
 
 document.addEventListener("keydown", (e) => {
+  const inName = e.target === $("name-input");
   if (e.key === "Escape") {
     e.preventDefault();
     if (state === "playing") pauseGame();
     else if (state === "paused") resumeGame();
+    else if (state === "board") closeBoard();
     else if (state === "over") exitToMenu();
+  } else if (inName) {
+    // ism yozilayotganda Enter formani yuboradi, boshqa tugmalar o'yinga ta'sir qilmaydi
+    return;
+  } else if (e.key.toLowerCase() === "l" && state === "menu" && lbOn) {
+    openBoard(mode, "start-screen");
   } else if (e.key === "Enter") {
     if (state === "menu" || state === "over") { e.preventDefault(); startGame(); }
   } else if (e.key.toLowerCase() === "q" && state === "paused") {

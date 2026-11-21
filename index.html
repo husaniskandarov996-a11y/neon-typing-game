@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>neon type</title>
-  <link rel="stylesheet" href="style.css?v=0.3" />
+  <link rel="stylesheet" href="style.css?v=0.4" />
 </head>
 <body>
   <div class="screen">
@@ -50,7 +50,19 @@
 
       <button id="start-btn" class="press">press ENTER to start</button>
       <p class="small">best (<span id="best-mode">normal</span>): <b id="best-start">0</b></p>
-      <p class="sign">v0.3 · made by khusan</p>
+      <button id="board-btn" class="action lb-only">[ L ] leaderboard</button>
+      <p class="sign">v0.4 · made by khusan</p>
+    </section>
+
+    <section id="board-screen" class="overlay hidden">
+      <h2 class="title board-title">top 10</h2>
+      <div class="menu" id="board-tabs">
+        <button class="opt active" data-board="normal">normal</button>
+        <button class="opt" data-board="hard">hard</button>
+      </div>
+      <table class="board" id="board-table"></table>
+      <p class="small" id="board-status"></p>
+      <button id="board-back" class="action">[ esc ] back</button>
     </section>
 
     <section id="pause-screen" class="overlay dim hidden">
@@ -71,6 +83,11 @@
         <tr><td>accuracy</td><td id="final-accuracy">0%</td></tr>
       </table>
       <p id="new-best" class="new-best hidden">new best!</p>
+      <form id="submit-form" class="submit lb-only">
+        <input id="name-input" maxlength="12" placeholder="your name" autocomplete="off" spellcheck="false" />
+        <button type="submit" id="submit-btn" class="action main">save to leaderboard</button>
+      </form>
+      <p class="small" id="submit-status"></p>
       <div class="actions">
         <button id="restart-btn" class="action main">[ enter ] play again</button>
         <button id="exit-btn" class="action">[ esc ] exit</button>
@@ -78,6 +95,7 @@
     </section>
   </div>
 
-  <script src="script.js?v=0.3"></script>
+  <script src="config.js?v=0.4"></script>
+  <script src="script.js?v=0.4"></script>
 </body>
 </html>
